@@ -1,7 +1,6 @@
 import {
     Avatar,
     Box,
-    Button,
     Divider,
     IconButton,
     Link,
@@ -14,9 +13,9 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import LoginForm from "./LoginForm";
 
-export default function UserMenu({ alt, src, links }) {
+export default function UserMenu({ alt, src, links, isLoggedIn }) {
     const [anchorElUser, setAnchorElUser] = useState(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -26,15 +25,6 @@ export default function UserMenu({ alt, src, links }) {
         setAnchorElUser(null);
     };
 
-    const handleLogin = () => {
-        alert("logged in");
-        setIsLoggedIn(true);
-    };
-
-    const handleLogout = () => {
-        alert("logged out");
-        setIsLoggedIn(false);
-    };
 
     return (
         <Box sx={{ flexGrow: 0 }}>
