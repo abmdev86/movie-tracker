@@ -12,6 +12,7 @@ export default function Layout({ children }) {
                 <UserMenu links={["Profile", 'Settings']} />
 
             </Header>
+
             <Container maxWidth='xs'>
                 {children}
             </Container>

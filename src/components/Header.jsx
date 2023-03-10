@@ -14,7 +14,7 @@ export default function Header({ pages, children }) {
         setAnchorElNav(null);
     }
     return (
-        <AppBar position="absolute">
+        <AppBar position="static" sx={{}}>
             <Container maxWidth="xl" >
                 <Toolbar disableGutters>
                     <Typography
