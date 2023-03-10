@@ -9,8 +9,10 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material";
+import FormModal from './FormModal';
 import { useState } from "react";
 import PropTypes from "prop-types";
+import LoginForm from "./LoginForm";
 
 export default function UserMenu({ alt, src, links }) {
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -63,11 +65,9 @@ export default function UserMenu({ alt, src, links }) {
                     </Link>
                 ))}
                 <Divider />
-                {isLoggedIn ? (
-                    <Button onClick={handleLogout}>Logout</Button>
-                ) : (
-                    <Button onClick={handleLogin}>Login</Button>
-                )}
+                <FormModal label={isLoggedIn ? 'Logout' : 'Login'} >
+                    <LoginForm />
+                </FormModal>
             </Menu>
         </Box>
     );

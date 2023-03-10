@@ -10,13 +10,13 @@ export default function Header({ pages, children }) {
         setAnchorElNav(event.currentTarget);
     };
 
-    const handleCloseNavMenu = (event) => {
+    const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     }
     return (
-        <AppBar position="static" sx={{}}>
+        <AppBar position="static" sx={{ width: { xl: '100%' }, }}>
             <Container maxWidth="xl" >
-                <Toolbar disableGutters>
+                <Toolbar variant="dense" disableGutters>
                     <Typography
                         variant="h6"
                         noWrap

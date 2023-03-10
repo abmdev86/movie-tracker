@@ -7,13 +7,13 @@ export default function Layout({ children }) {
 
 
     return (
-        <Container maxWidth="xl">
+        <Container maxWidth='xl' sx={{ m: 'auto', p: 0, }}>
             <Header pages={["Movies", "Reviews", 'Favorites']}>
                 <UserMenu links={["Profile", 'Settings']} />
 
             </Header>
 
-            <Container maxWidth='xs'>
+            <Container maxWidth='xl'>
                 {children}
             </Container>
 
