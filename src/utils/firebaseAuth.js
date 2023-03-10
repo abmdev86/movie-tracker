@@ -5,18 +5,13 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 
-const firebaseAuth = getAuth(app);
+export const firebaseAuth = getAuth(app);
 
 const signInUser = async (email, password) => {
   try {
-    const response = await signInWithEmailAndPassword(
-      firebaseAuth,
-      email,
-      password
-    );
-    console.log(response);
+    await signInWithEmailAndPassword(firebaseAuth, email, password);
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 };
 
@@ -28,8 +23,8 @@ const createUserBasic = async (email, password) => {
       email,
       password
     );
-
-    console.log(response);
+    const newUser = await response.json();
+    console.log(newUser);
   } catch (error) {
     console.error(error);
   }

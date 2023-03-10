@@ -9,13 +9,19 @@ import {
     Typography,
 } from "@mui/material";
 import FormModal from './FormModal';
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import LoginForm from "./LoginForm";
+import { UserContext } from "../contexts/FirebaseAuthContext";
 
 export default function UserMenu({ alt, src, links, isLoggedIn }) {
     const [anchorElUser, setAnchorElUser] = useState(null);
+    const user = useContext(UserContext);
 
+    useEffect(() => {
+
+        return () => console.log(user);
+    }, [user]);
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
