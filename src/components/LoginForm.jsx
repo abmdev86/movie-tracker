@@ -29,7 +29,7 @@ const ShowPasswordIcon = ({ isVisible, handleIsVisible }) => {
     );
 };
 
-export default function LoginForm() {
+export default function LoginForm({ callback = null }) {
     const [showPW, setShowPW] = useState(false);
 
     const formik = useFormik({
@@ -38,8 +38,18 @@ export default function LoginForm() {
             password: "",
         },
         validationSchema: loginValidationSchema,
-        onSubmit: async (values) => {
-            await signInUser(values.email, values.password);
+        onSubmit: async (values, { setSubmitting }) => {
+            try {
+                await signInUser(values.email, values.password);
+                if (callback !== null) {
+                    callback();
+                }
+
+            } catch (error) {
+                console.error("LOGIN ERROR", error);
+                setSubmitting(false);
+
+            }
         },
     });
 
@@ -96,6 +106,7 @@ export default function LoginForm() {
                     fullWidth
                     type="submit"
                     form="login-form"
+                    disabled={!formik.isValid || !formik.dirty || formik.isSubmitting}
                 >
                     Login
                 </Button>

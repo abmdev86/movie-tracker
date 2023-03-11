@@ -1,6 +1,7 @@
 import { createContext, useEffect, useReducer } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth } from "../utils/firebaseAuth";
+import { redirect } from "react-router-dom";
 export const UserContext = createContext(null);
 export const UserDispatchContext = createContext(null);
 
@@ -56,7 +57,7 @@ export default function UserProvider({ children }) {
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
       if (user) {
-        console.log("signing in", user.auth);
+        // set logged in user as the user being tracked with state.
         dispatch({
           newName: user.auth.currentUser.email,
           newId: user.auth.currentUser.uid,
@@ -67,7 +68,9 @@ export default function UserProvider({ children }) {
 
           type: "login",
         });
+        return redirect("/");
       } else {
+        // did not login or logged out.
         dispatch({
           newName: "Guest",
           newId: null,
@@ -79,10 +82,10 @@ export default function UserProvider({ children }) {
           type: "logout",
         });
       }
+      return redirect("/login");
     });
   }, []);
 
-  console.log("FirebaseAuthContext::UserProvider -> ", state);
   return (
     <UserContext.Provider value={state}>
       <UserDispatchContext.Provider value={dispatch}>

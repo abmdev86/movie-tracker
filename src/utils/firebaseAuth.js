@@ -12,7 +12,10 @@ const signInUser = async (email, password) => {
   try {
     await signInWithEmailAndPassword(firebaseAuth, email, password);
   } catch (error) {
-    console.log(error);
+    throw error;
+    //console.log("firebasAuth::ERROR::SignIn-> ", error);
+
+    // todo redirect user to login page and display the error.
   }
 };
 

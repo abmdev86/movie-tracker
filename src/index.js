@@ -8,18 +8,17 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
 import UserProvider from "./contexts/FirebaseAuthContext";
 import Layout from "./components/Layout";
+import ErrorPage from "./pages/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-
-    children: [
-      {
-        path: "login",
-        element: <LoginForm />,
-      },
-    ],
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/login",
+    element: <LoginForm />,
   },
 ]);
 

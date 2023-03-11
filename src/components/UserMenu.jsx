@@ -11,7 +11,6 @@ import {
 import LoginModal from './LoginModal';
 import { useContext, useState } from "react";
 import PropTypes from "prop-types";
-import LoginForm from "./LoginForm";
 import { UserContext } from "../contexts/FirebaseAuthContext";
 
 export default function UserMenu({ links }) {
@@ -59,9 +58,8 @@ export default function UserMenu({ links }) {
                     </Link>
                 ))}
                 <Divider />
-                <LoginModal isOnline={user?.online} >
-                    <LoginForm />
-                </LoginModal>
+                <LoginModal isOnline={user?.online} />
+
             </Menu>
         </Box>
     );
