@@ -11,6 +11,7 @@ import Layout from "./components/Layout";
 import ErrorPage from "./pages/ErrorPage";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
+import PrivateRoutes from "./components/RouteProtection";
 
 const router = createBrowserRouter([
   {
@@ -28,7 +29,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/profile/:id",
-    element: <Profile />,
+    element: (
+      <PrivateRoutes>
+        <Profile />
+      </PrivateRoutes>
+    ),
   },
 ]);
 
