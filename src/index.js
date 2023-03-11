@@ -4,11 +4,33 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { analytics } from "./utils/firebaseConfig";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import LoginForm from "./components/LoginForm";
+import UserProvider from "./contexts/FirebaseAuthContext";
+import Layout from "./components/Layout";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+
+    children: [
+      {
+        path: "login",
+        element: <LoginForm />,
+      },
+    ],
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <UserProvider>
+      <Layout>
+        <RouterProvider router={router} />
+      </Layout>
+    </UserProvider>
   </React.StrictMode>
 );
 
