@@ -5,13 +5,13 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { analytics } from "./utils/firebaseConfig";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LoginForm from "./components/LoginForm";
 import UserProvider from "./contexts/FirebaseAuthContext";
 import Layout from "./components/Layout";
 import ErrorPage from "./pages/ErrorPage";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 import PrivateRoutes from "./components/RouteProtection";
+import Login from "./pages/Login";
 
 const router = createBrowserRouter([
   {
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <LoginForm />,
+    element: <Login />,
   },
   {
     path: "/signup",

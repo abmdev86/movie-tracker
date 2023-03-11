@@ -4,6 +4,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { signUserOut } from "../utils/firebaseAuth";
 import LoginForm from "./LoginForm";
+import { Navigate } from "react-router-dom";
 
 const LogoutScreen = ({ handleClose }) => {
     const handleLogout = () => {
@@ -31,8 +32,14 @@ const LogoutScreen = ({ handleClose }) => {
 export default function LoginModal({ isOnline }) {
     const [open, setOpen] = useState(false);
 
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const handleSuccessLogin = () => {
+        handleClose();
+
+
+    }
 
     return (
         <div>
@@ -57,7 +64,7 @@ export default function LoginModal({ isOnline }) {
                             p: 4,
                         }}
                     >
-                        <LoginForm callback={handleClose} />
+                        <LoginForm callback={handleSuccessLogin} />
                     </Box>
                 </Modal>
             ) : (
@@ -84,6 +91,7 @@ export default function LoginModal({ isOnline }) {
                     </Box>
                 </Modal>
             )}
+
         </div>
     );
 }

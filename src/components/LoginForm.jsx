@@ -24,6 +24,7 @@ const loginValidationSchema = yup.object({
 export default function LoginForm({ callback = null }) {
     const [showPW, setShowPW] = useState(false);
 
+
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -34,8 +35,9 @@ export default function LoginForm({ callback = null }) {
             try {
                 await signInUser(values.email, values.password);
                 if (callback !== null) {
-                    callback();
+                    return callback();
                 }
+
 
             } catch (error) {
                 console.error("LOGIN ERROR", error);
