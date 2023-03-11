@@ -60,9 +60,9 @@ const GuestUserLinks = () => {
     ));
 };
 
-export default function UserMenu() {
+export default function UserMenu({ user }) {
     const [anchorElUser, setAnchorElUser] = useState(null);
-    const user = useContext(UserContext);
+
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);

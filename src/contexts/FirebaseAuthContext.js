@@ -14,13 +14,12 @@ const initialUser = {
   photoUrl: "",
   online: false,
 };
+
 function userReducer(state, action) {
   switch (action.type) {
     case "login": {
-      let user = {};
-
-      console.log("given user", action);
-      user = {
+      return {
+        ...state,
         id: action.newId,
         name: action.newName,
         token: action.newToken,
@@ -29,13 +28,10 @@ function userReducer(state, action) {
         photoUrl: action.newPhotoUrl,
         online: true,
       };
-
-      return user;
     }
     case "logout": {
-      console.log(`${state.name} is logging out!`);
-
       return {
+        ...state,
         id: null,
         name: "Guest",
         token: null,
@@ -52,8 +48,16 @@ function userReducer(state, action) {
   }
 }
 
+function createInitialState(user) {
+  return user;
+}
 export default function UserProvider({ children }) {
-  const [state, dispatch] = useReducer(userReducer, initialUser);
+  const [state, dispatch] = useReducer(
+    userReducer,
+    initialUser,
+    createInitialState
+  );
+
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
       if (user) {
@@ -65,10 +69,10 @@ export default function UserProvider({ children }) {
           newDisplayName: user.auth.currentUser.displayName,
           newIsVerified: user.auth.currentUser.emailVerified,
           newPhotoUrl: user.auth.currentUser.photoURL,
-
+          online: true,
           type: "login",
         });
-        return redirect("/");
+        // return redirect("/");
       } else {
         // did not login or logged out.
         dispatch({
@@ -78,14 +82,13 @@ export default function UserProvider({ children }) {
           newDisplayName: "Guest",
           newIsVerified: false,
           newPhotoUrl: "",
-
           type: "logout",
         });
       }
       return redirect("/login");
     });
   }, []);
-
+  console.log("the state", state);
   return (
     <UserContext.Provider value={state}>
       <UserDispatchContext.Provider value={dispatch}>
