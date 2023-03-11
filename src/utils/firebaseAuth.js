@@ -36,12 +36,12 @@ const signUserOut = (callback = null) => {
 const createUserBasic = async (email, password) => {
   //const newUser = null;
   try {
-    const response = await createUserWithEmailAndPassword(
+    const newUser = await createUserWithEmailAndPassword(
       firebaseAuth,
       email,
       password
     );
-    const newUser = await response.json();
+
     console.log(newUser);
   } catch (error) {
     console.error(error);

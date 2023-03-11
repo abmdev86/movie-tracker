@@ -3,22 +3,67 @@ import {
     Box,
     Divider,
     IconButton,
-    Link,
+
     Menu,
     Tooltip,
     Typography,
 } from "@mui/material";
-import LoginModal from './LoginModal';
+import LoginModal from "./LoginModal";
 import { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import { UserContext } from "../contexts/FirebaseAuthContext";
 
-export default function UserMenu({ links }) {
+const authLinks = ["Profile", "My movies"];
+const unAuthLinks = ["Signup"];
+
+const FirebaseAuthUserLinks = ({ userId }) => {
+    return authLinks.map((link, index) => (
+        <Typography
+            component="a"
+            href={`/${link.replace(" ", "-").toLocaleLowerCase()}/${userId}`}
+            sx={{
+                mr: 2,
+                display: { xs: "flex", },
+                flexGrow: 1,
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+            }}
+            key={index}
+        >
+            {link}
+        </Typography>
+    ));
+};
+
+const GuestUserLinks = () => {
+    return unAuthLinks.map((link, index) => (
+        <Typography
+            href={`/${link.replace(" ", "-").toLocaleLowerCase()}`}
+            key={index}
+            component='a'
+            sx={{
+                mr: 2,
+                display: { xs: "flex" },
+                p: 2,
+                flexGrow: 1,
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+            }}
+        >
+            {link}
+        </Typography>
+    ));
+};
+
+export default function UserMenu() {
     const [anchorElUser, setAnchorElUser] = useState(null);
     const user = useContext(UserContext);
-
-
-
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -27,7 +72,6 @@ export default function UserMenu({ links }) {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-
 
     return (
         <Box sx={{ flexGrow: 0 }}>
@@ -52,14 +96,9 @@ export default function UserMenu({ links }) {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
             >
-                {links.map((link, index) => (
-                    <Link href={`/${link}`} key={index}>
-                        <Typography key={index}>{link}</Typography>
-                    </Link>
-                ))}
+                {user?.online ? <FirebaseAuthUserLinks userId={user?.id} /> : <GuestUserLinks />}
                 <Divider />
                 <LoginModal isOnline={user?.online} />
-
             </Menu>
         </Box>
     );

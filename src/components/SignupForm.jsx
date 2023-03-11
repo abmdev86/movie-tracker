@@ -1,14 +1,13 @@
+import { Box, Button, TextField } from "@mui/material";
 import { useFormik } from "formik";
-import * as yup from "yup";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import { signInUser } from "../utils/firebaseAuth";
 import { useState } from "react";
+import * as yup from "yup";
+import { createUserBasic } from "../utils/firebaseAuth";
 import ShowPasswordIcon from "./ShowPasswordIcon";
 import { Typography } from "@mui/material";
+import FormErrorMessage from "./FormErrorMessage";
 
-
-const loginValidationSchema = yup.object({
+const signupFormValidationSchema = yup.object().shape({
     email: yup
         .string("Enter Your Email")
         .email("Enter a valid email")
@@ -17,30 +16,32 @@ const loginValidationSchema = yup.object({
         .string("Enter your password")
         .min(8, "Password should be of minimum 8 characters length")
         .required("Password is required"),
+    passwordConfirm: yup
+        .string("Confirm password")
+        .oneOf([yup.ref("password"), null], 'Passwords must match')
+        .required("Must confirm password"),
 });
 
-
-
-export default function LoginForm({ callback = null }) {
+export default function SignupForm({ callback = null }) {
     const [showPW, setShowPW] = useState(false);
+    const [showConfirmPW, setShowConfirmPW] = useState(false);
 
     const formik = useFormik({
         initialValues: {
             email: "",
             password: "",
+            passwordConfirm: "",
         },
-        validationSchema: loginValidationSchema,
+        validationSchema: signupFormValidationSchema,
         onSubmit: async (values, { setSubmitting }) => {
             try {
-                await signInUser(values.email, values.password);
+                await createUserBasic(values.email, values.password);
                 if (callback !== null) {
-                    callback();
+                    return callback();
                 }
-
             } catch (error) {
-                console.error("LOGIN ERROR", error);
+                console.log(error);
                 setSubmitting(false);
-
             }
         },
     });
@@ -48,21 +49,18 @@ export default function LoginForm({ callback = null }) {
     const handleShowPassword = () => {
         setShowPW((show) => !show);
     };
+    const handleShowConfirmPassword = () => {
+        setShowConfirmPW(show => !show);
+    }
 
     return (
-        <div
-            style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "auto",
-                padding: 5,
-            }}
-        >
-            <form onSubmit={formik.handleSubmit} id="login-form">
-                <Typography variant="h6" align="center" sx={{ mb: 2 }}>Login</Typography>
+        <Box  >
+            <form onSubmit={formik.handleSubmit} id='signup-form'>
+                <Typography variant="h6">Signup</Typography>
+
                 <TextField
                     fullWidth
+                    sx={{ m: 'auto', mb: 1, mt: 2 }}
                     id="email"
                     name="email"
                     label="Email"
@@ -71,9 +69,13 @@ export default function LoginForm({ callback = null }) {
                     error={formik.touched.email && Boolean(formik.errors.email)}
                     helperText={formik.touched.email && formik.errors.email}
                     variant="filled"
+
                 />
+                {formik.errors.email ? <FormErrorMessage message={formik.errors.email} /> : null}
                 <TextField
+
                     fullWidth
+                    sx={{ m: 'auto', mb: 1 }}
                     id="password"
                     name="password"
                     label="Password"
@@ -83,6 +85,7 @@ export default function LoginForm({ callback = null }) {
                     error={formik.touched.password && Boolean(formik.errors.password)}
                     helperText={formik.touched.password && formik.errors.password}
                     variant="filled"
+
                     InputProps={{
                         endAdornment: (
                             <ShowPasswordIcon
@@ -92,18 +95,43 @@ export default function LoginForm({ callback = null }) {
                         ),
                     }}
                 />
+                {formik.errors.password ? <FormErrorMessage message={formik.errors.password} /> : null}
+                <TextField
+                    fullWidth
 
+                    sx={{ m: 'auto', mb: 1 }}
+                    id="passwordConfirm"
+                    name="passwordConfirm"
+                    label="Confirm Password"
+                    type={showConfirmPW ? "" : "password"}
+                    value={formik.values.passwordConfirm}
+                    onChange={formik.handleChange}
+                    error={formik.touched.passwordConfirm && Boolean(formik.errors.passwordConfirm)}
+                    helperText={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
+                    variant="filled"
+                    InputProps={{
+                        endAdornment: (
+                            <ShowPasswordIcon
+                                isVisible={showConfirmPW}
+                                handleIsVisible={handleShowConfirmPassword}
+                            />
+                        ),
+                    }}
+                />
+                {formik.errors.passwordConfirm ? <FormErrorMessage message={formik.errors.passwordConfirm} /> : null}
                 <Button
+                    sx={{ m: 'auto' }}
+                    size="small"
                     color="primary"
                     variant="contained"
                     fullWidth
                     type="submit"
-                    form="login-form"
+                    form="signup-form"
                     disabled={!formik.isValid || !formik.dirty || formik.isSubmitting}
                 >
-                    Login
+                    Sign Up
                 </Button>
             </form>
-        </div>
+        </Box>
     );
 }

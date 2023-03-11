@@ -9,6 +9,8 @@ import LoginForm from "./components/LoginForm";
 import UserProvider from "./contexts/FirebaseAuthContext";
 import Layout from "./components/Layout";
 import ErrorPage from "./pages/ErrorPage";
+import Profile from "./pages/Profile";
+import Signup from "./pages/Signup";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginForm />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
+  },
+  {
+    path: "/profile/:id",
+    element: <Profile />,
   },
 ]);
 
