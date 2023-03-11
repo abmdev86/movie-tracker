@@ -8,20 +8,18 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material";
-import FormModal from './FormModal';
-import { useContext, useEffect, useState } from "react";
+import LoginModal from './LoginModal';
+import { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import LoginForm from "./LoginForm";
 import { UserContext } from "../contexts/FirebaseAuthContext";
 
-export default function UserMenu({ alt, src, links, isLoggedIn }) {
+export default function UserMenu({ links }) {
     const [anchorElUser, setAnchorElUser] = useState(null);
     const user = useContext(UserContext);
 
-    useEffect(() => {
 
-        return () => console.log(user);
-    }, [user]);
+
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -36,7 +34,7 @@ export default function UserMenu({ alt, src, links, isLoggedIn }) {
         <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open Settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt={alt ?? 'app-logo'} src={src ?? 'M'} />
+                    <Avatar alt={`${user?.name}'s profile`} src={user?.photoUrl} />
                 </IconButton>
             </Tooltip>
             <Menu
@@ -61,9 +59,9 @@ export default function UserMenu({ alt, src, links, isLoggedIn }) {
                     </Link>
                 ))}
                 <Divider />
-                <FormModal label={isLoggedIn ? 'Logout' : 'Login'} >
+                <LoginModal label={user?.online ? 'Logout' : 'Login'} >
                     <LoginForm />
-                </FormModal>
+                </LoginModal>
             </Menu>
         </Box>
     );

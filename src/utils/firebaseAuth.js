@@ -3,6 +3,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 
 export const firebaseAuth = getAuth(app);
@@ -13,6 +14,18 @@ const signInUser = async (email, password) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+const signUserOut = (callback) => {
+  signOut(firebaseAuth)
+    .then(() => {
+      console.log("Successfully signed out");
+
+      return callback();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 const createUserBasic = async (email, password) => {
@@ -30,4 +43,4 @@ const createUserBasic = async (email, password) => {
   }
 };
 
-export { signInUser, createUserBasic };
+export { signInUser, signUserOut, createUserBasic };

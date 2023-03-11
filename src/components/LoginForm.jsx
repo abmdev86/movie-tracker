@@ -3,11 +3,10 @@ import * as yup from "yup";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { signInUser } from "../utils/firebaseAuth";
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { IconButton, InputAdornment, OutlinedInput } from "@mui/material";
-import { UserContext, UserDispatchContext } from "../contexts/FirebaseAuthContext";
+import { IconButton, InputAdornment } from "@mui/material";
 
 const loginValidationSchema = yup.object({
     email: yup
@@ -32,8 +31,7 @@ const ShowPasswordIcon = ({ isVisible, handleIsVisible }) => {
 
 export default function LoginForm() {
     const [showPW, setShowPW] = useState(false);
-    const userDispatch = useContext(UserDispatchContext);
-    const user = useContext(UserContext);
+
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -41,39 +39,25 @@ export default function LoginForm() {
         },
         validationSchema: loginValidationSchema,
         onSubmit: async (values) => {
-
-            // const newUser = {
-            //     id: Math.floor(Math.random() * max),
-            //     name: values.email,
-            //     token: "TestT001003" + values.password,
-
-            // }
-            // console.log('new user', newUser);
-
             await signInUser(values.email, values.password);
-
-            // userDispatch({
-            //     newId: newUser.id,
-            //     newName: newUser.name,
-            //     newToken: newUser.token,
-            //     type: 'login'
-            // });
         },
     });
-
-    useEffect(() => {
-
-
-        return () => console.log('context user now', user);
-    }, [user])
 
     const handleShowPassword = () => {
         setShowPW((show) => !show);
     };
 
     return (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: 'auto', padding: 5 }}>
-            <form onSubmit={formik.handleSubmit} id='login-form' >
+        <div
+            style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "auto",
+                padding: 5,
+            }}
+        >
+            <form onSubmit={formik.handleSubmit} id="login-form">
                 <TextField
                     fullWidth
                     id="email"
@@ -111,8 +95,7 @@ export default function LoginForm() {
                     variant="contained"
                     fullWidth
                     type="submit"
-
-                    form='login-form'
+                    form="login-form"
                 >
                     Login
                 </Button>

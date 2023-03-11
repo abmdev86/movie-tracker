@@ -5,9 +5,13 @@ export const UserContext = createContext(null);
 export const UserDispatchContext = createContext(null);
 
 const initialUser = {
-  id: 0,
-  name: "",
+  id: null,
+  name: "Guest",
   token: "",
+  displayName: "Guest",
+  isVerified: false,
+  photoUrl: "",
+  online: false,
 };
 function userReducer(state, action) {
   switch (action.type) {
@@ -19,8 +23,26 @@ function userReducer(state, action) {
         id: action.newId,
         name: action.newName,
         token: action.newToken,
+        displayName: action.newDisplayName,
+        isVerified: action.newIsVerified,
+        photoUrl: action.newPhotoUrl,
+        online: true,
       };
+
       return user;
+    }
+    case "logout": {
+      console.log(`${state.name} is logging out!`);
+
+      return {
+        id: null,
+        name: "Guest",
+        token: null,
+        displayName: "Guest",
+        isVerified: false,
+        photoUrl: "",
+        online: false,
+      };
     }
 
     default: {
@@ -30,24 +52,39 @@ function userReducer(state, action) {
 }
 
 export default function UserProvider({ children }) {
-  const [user, dispatch] = useReducer(userReducer, initialUser);
+  const [state, dispatch] = useReducer(userReducer, initialUser);
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
       if (user) {
-        console.log("signing in", user.auth.currentUser.email);
+        console.log("signing in", user.auth);
         dispatch({
           newName: user.auth.currentUser.email,
           newId: user.auth.currentUser.uid,
           newToken: user.auth.currentUser.accessToken,
+          newDisplayName: user.auth.currentUser.displayName,
+          newIsVerified: user.auth.currentUser.emailVerified,
+          newPhotoUrl: user.auth.currentUser.photoURL,
+
           type: "login",
         });
       } else {
-        console.log("user logged out");
+        dispatch({
+          newName: "Guest",
+          newId: null,
+          newToken: null,
+          newDisplayName: "Guest",
+          newIsVerified: false,
+          newPhotoUrl: "",
+
+          type: "logout",
+        });
       }
     });
   }, []);
+
+  console.log("FirebaseAuthContext::UserProvider -> ", state);
   return (
-    <UserContext.Provider value={user}>
+    <UserContext.Provider value={state}>
       <UserDispatchContext.Provider value={dispatch}>
         {children}
       </UserDispatchContext.Provider>
