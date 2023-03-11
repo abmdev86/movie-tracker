@@ -59,7 +59,7 @@ export default function UserMenu({ links }) {
                     </Link>
                 ))}
                 <Divider />
-                <LoginModal label={user?.online ? 'Logout' : 'Login'} >
+                <LoginModal isOnline={user?.online} >
                     <LoginForm />
                 </LoginModal>
             </Menu>

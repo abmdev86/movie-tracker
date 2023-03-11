@@ -27,7 +27,7 @@ const LogoutScreen = ({ handleClose }) => {
 }
 
 
-export default function LoginModal({ label: isOnline, children }) {
+export default function LoginModal({ isOnline, children }) {
     const [open, setOpen] = useState(false);
 
     const handleOpen = () => setOpen(true);
@@ -44,7 +44,7 @@ export default function LoginModal({ label: isOnline, children }) {
                         open={open}
                         onClose={handleClose}
                         aria-labelledby='login-modal'
-                        aria-describedby={`${isOnline.toLowerCase()}-modal-form`}
+                        aria-describedby='login-modal-form'
                     >
                         <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 400, bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4 }}>
                             {children}
@@ -57,7 +57,7 @@ export default function LoginModal({ label: isOnline, children }) {
                         open={open}
                         onClose={handleClose}
                         aria-labelledby='logout-modal'
-                        aria-describedby={`${isOnline.toLowerCase()}-modal-form`}
+                        aria-describedby='logout-modal-form'
                     >
                         <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 400, bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4 }}>
                             <LogoutScreen handleClose={handleClose} />

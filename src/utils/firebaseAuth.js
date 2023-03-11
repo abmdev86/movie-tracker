@@ -16,12 +16,14 @@ const signInUser = async (email, password) => {
   }
 };
 
-const signUserOut = (callback) => {
+const signUserOut = (callback = null) => {
   signOut(firebaseAuth)
     .then(() => {
       console.log("Successfully signed out");
-
-      return callback();
+      if (callback !== null) {
+        return callback();
+      }
+      return;
     })
     .catch((error) => {
       console.log(error);
