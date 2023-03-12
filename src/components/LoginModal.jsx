@@ -1,14 +1,14 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import Modal from "@mui/material/Modal";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import PropTypes from "prop-types";
-import { signUserOut } from "../utils/firebaseAuth";
 import LoginForm from "./LoginForm";
-import { Navigate } from "react-router-dom";
+import { UserContext } from "../contexts/FirebaseAuthContext";
 
 const LogoutScreen = ({ handleClose }) => {
-    const handleLogout = () => {
-        signUserOut(handleClose);
+    const { handleLogout } = useContext(UserContext);
+    const logout = async () => {
+        await handleLogout(handleClose);
     };
     return (
         <>
@@ -17,7 +17,7 @@ const LogoutScreen = ({ handleClose }) => {
             </Typography>
             <Stack spacing={2} direction="row">
                 <div style={{ margin: "auto" }}>
-                    <Button variant="contained" color="error" onClick={handleLogout}>
+                    <Button variant="contained" color="error" onClick={logout}>
                         Logout
                     </Button>
                     <Button onClick={handleClose} variant="outlined" sx={{ m: 2 }}>
@@ -35,11 +35,7 @@ export default function LoginModal({ isOnline }) {
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const handleSuccessLogin = () => {
-        handleClose();
 
-
-    }
 
     return (
         <div>
@@ -64,7 +60,7 @@ export default function LoginModal({ isOnline }) {
                             p: 4,
                         }}
                     >
-                        <LoginForm callback={handleSuccessLogin} />
+                        <LoginForm callback={handleClose} />
                     </Box>
                 </Modal>
             ) : (

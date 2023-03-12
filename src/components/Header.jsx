@@ -11,6 +11,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import PropTypes from "prop-types";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Header({ pages, children }) {
     const [anchorElNav, setAnchorElNav] = useState(null);
@@ -26,23 +27,28 @@ export default function Header({ pages, children }) {
         <AppBar position="static" sx={{ width: { xl: "100%" } }}>
             <Container maxWidth="xl">
                 <Toolbar variant="dense" disableGutters>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="/"
-                        sx={{
-                            mr: 2,
-                            display: { xs: "none", md: "flex" },
-                            fontFamily: "monospace",
-                            fontWeight: 700,
+                    <Link
+                        to="/"
+                        style={{
                             letterSpacing: ".3rem",
                             color: "inherit",
                             textDecoration: "none",
                         }}
                     >
-                        Movie Tracker
-                    </Typography>
+                        <Typography
+                            sx={{
+                                marginRight: 2,
+                                display: { xs: "none", md: "flex" },
+                                fontFamily: "monospace",
+                                fontWeight: 700,
+                                letterSpacing: ".3rem",
+                                color: "inherit",
+                                textDecoration: "none",
+                            }}
+                        >
+                            Movie Tracker
+                        </Typography>
+                    </Link>
 
                     <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
                         <IconButton
@@ -75,38 +81,36 @@ export default function Header({ pages, children }) {
                         >
                             {pages.map((page, index) => (
                                 <MenuItem key={index} onClick={handleCloseNavMenu}>
-                                    <Typography
-                                        noWrap
-                                        component="a"
-                                        href={`/${page}`}
-                                        sx={{ textDecoration: "none" }}
-                                    >
-                                        {page}
-                                    </Typography>
+                                    <Link to={`/${page}`}>
+                                        <Typography noWrap sx={{ textDecoration: "none" }}>
+                                            {page}
+                                        </Typography>
+                                    </Link>
                                 </MenuItem>
                             ))}
                         </Menu>
                     </Box>
 
                     {/* add icon */}
-                    <Typography
-                        variant="h5"
-                        noWrap
-                        component="a"
-                        href="/"
-                        sx={{
-                            mr: 2,
-                            display: { xs: "flex", md: "none" },
-                            flexGrow: 1,
-                            fontFamily: "monospace",
-                            fontWeight: 700,
-                            letterSpacing: ".3rem",
-                            color: "inherit",
-                            textDecoration: "none",
-                        }}
-                    >
-                        Movie Tracker
-                    </Typography>
+                    <Link to="/">
+                        <Typography
+                            variant="h5"
+                            noWrap
+                            sx={{
+                                mr: 2,
+                                display: { xs: "flex", md: "none" },
+                                flexGrow: 1,
+                                fontFamily: "monospace",
+                                fontWeight: 700,
+                                letterSpacing: ".3rem",
+                                color: "inherit",
+                                textDecoration: "none",
+                            }}
+                        >
+                            Movie Tracker
+                        </Typography>
+                    </Link>
+
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                         {pages.map((page, index) => (
                             <Typography

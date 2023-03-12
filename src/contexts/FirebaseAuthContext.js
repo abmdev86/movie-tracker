@@ -1,99 +1,80 @@
-import { createContext, useEffect, useReducer } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { firebaseAuth } from "../utils/firebaseAuth";
-import { redirect } from "react-router-dom";
+import { createContext, useState } from "react";
+import {
+  createUserWithEmail,
+  signInUser,
+  signOutUser,
+} from "../utils/firebaseAuth";
+
 export const UserContext = createContext(null);
 export const UserDispatchContext = createContext(null);
 
-const initialUser = {
+export const initialUser = {
   id: null,
-  name: "Guest",
-  token: "",
+  email: "",
+  accessToken: "",
   displayName: "Guest",
-  isVerified: false,
-  photoUrl: "",
-  online: false,
+  emailVerified: false,
+  photoURL: "",
 };
 
-function userReducer(state, action) {
-  switch (action.type) {
-    case "login": {
-      return {
-        ...state,
-        id: action.newId,
-        name: action.newName,
-        token: action.newToken,
-        displayName: action.newDisplayName,
-        isVerified: action.newIsVerified,
-        photoUrl: action.newPhotoUrl,
-        online: true,
-      };
-    }
-    case "logout": {
-      return {
-        ...state,
-        id: null,
-        name: "Guest",
-        token: null,
-        displayName: "Guest",
-        isVerified: false,
-        photoUrl: "",
-        online: false,
-      };
-    }
-
-    default: {
-      throw Error(`Unkown action: ${action.type}`);
-    }
-  }
-}
-
-function createInitialState(user) {
-  return user;
-}
 export default function UserProvider({ children }) {
-  const [state, dispatch] = useReducer(
-    userReducer,
-    initialUser,
-    createInitialState
-  );
+  const [currentUser, setCurrentUser] = useState(initialUser);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    onAuthStateChanged(firebaseAuth, (user) => {
-      if (user) {
-        // set logged in user as the user being tracked with state.
-        dispatch({
-          newName: user.auth.currentUser.email,
-          newId: user.auth.currentUser.uid,
-          newToken: user.auth.currentUser.accessToken,
-          newDisplayName: user.auth.currentUser.displayName,
-          newIsVerified: user.auth.currentUser.emailVerified,
-          newPhotoUrl: user.auth.currentUser.photoURL,
-          online: true,
-          type: "login",
-        });
-        // return redirect("/");
-      } else {
-        // did not login or logged out.
-        dispatch({
-          newName: "Guest",
-          newId: null,
-          newToken: null,
-          newDisplayName: "Guest",
-          newIsVerified: false,
-          newPhotoUrl: "",
-          type: "logout",
-        });
-      }
-      return redirect("/login");
+  const handleLogin = async (email, password, callback = null) => {
+    const loginUser = await signInUser(email, password);
+    console.log(loginUser);
+    setCurrentUser({
+      id: loginUser.user.uid,
+      email: loginUser.user.email,
+      accessToken: loginUser.user.accessToken,
+      displayName: loginUser.user.displayName ?? "NoName",
+      emailVerified: loginUser.user.emailVerified,
+      photoURL: loginUser.user.photoURL,
     });
-  }, []);
-  console.log("the state", state);
+    setIsLoggedIn(true);
+    if (callback) {
+      return callback();
+    }
+  };
+
+  const handleLogout = async (callback = null) => {
+    await signOutUser();
+    setIsLoggedIn(false);
+    setCurrentUser({ ...initialUser });
+    if (callback) {
+      return callback;
+    }
+    alert("You have successfully signed out");
+  };
+
+  const handleCreateUser = async (email, password, callback = null) => {
+    const newUser = await createUserWithEmail(email, password);
+    setCurrentUser({
+      id: newUser.uid,
+      email: newUser.email,
+      accessToken: newUser.accessToken,
+      displayName: newUser.displayName ?? "NoName",
+      emailVerified: newUser.emailVerified,
+      photoURL: newUser.photoURL,
+    });
+    setIsLoggedIn(true);
+    if (callback) {
+      return callback();
+    }
+  };
+
   return (
-    <UserContext.Provider value={state}>
-      <UserDispatchContext.Provider value={dispatch}>
-        {children}
-      </UserDispatchContext.Provider>
+    <UserContext.Provider
+      value={{
+        isLoggedIn,
+        currentUser,
+        handleCreateUser,
+        handleLogin,
+        handleLogout,
+      }}
+    >
+      {children}
     </UserContext.Provider>
   );
 }

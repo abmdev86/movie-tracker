@@ -1,11 +1,11 @@
 import { Box, Button, TextField } from "@mui/material";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import * as yup from "yup";
-import { createUserBasic } from "../utils/firebaseAuth";
 import ShowPasswordIcon from "./ShowPasswordIcon";
 import { Typography } from "@mui/material";
 import FormErrorMessage from "./FormErrorMessage";
+import { UserContext } from "../contexts/FirebaseAuthContext";
 
 const signupFormValidationSchema = yup.object().shape({
     email: yup
@@ -25,6 +25,8 @@ const signupFormValidationSchema = yup.object().shape({
 export default function SignupForm({ callback = null }) {
     const [showPW, setShowPW] = useState(false);
     const [showConfirmPW, setShowConfirmPW] = useState(false);
+    const { handleCreateUser } = useContext(UserContext);
+
 
     const formik = useFormik({
         initialValues: {
@@ -35,10 +37,8 @@ export default function SignupForm({ callback = null }) {
         validationSchema: signupFormValidationSchema,
         onSubmit: async (values, { setSubmitting }) => {
             try {
-                await createUserBasic(values.email, values.password);
-                if (callback !== null) {
-                    return callback();
-                }
+                await handleCreateUser(values.email, values.password, callback);
+
             } catch (error) {
                 console.log(error);
                 setSubmitting(false);

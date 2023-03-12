@@ -2,10 +2,10 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { signInUser } from "../utils/firebaseAuth";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import ShowPasswordIcon from "./ShowPasswordIcon";
 import { Typography } from "@mui/material";
+import { UserContext } from "../contexts/FirebaseAuthContext";
 
 
 const loginValidationSchema = yup.object({
@@ -21,8 +21,9 @@ const loginValidationSchema = yup.object({
 
 
 
-export default function LoginForm({ callback = null }) {
+export default function LoginForm({ callback }) {
     const [showPW, setShowPW] = useState(false);
+    const { handleLogin } = useContext(UserContext);
 
 
     const formik = useFormik({
@@ -33,11 +34,11 @@ export default function LoginForm({ callback = null }) {
         validationSchema: loginValidationSchema,
         onSubmit: async (values, { setSubmitting }) => {
             try {
-                await signInUser(values.email, values.password);
-                if (callback !== null) {
-                    return callback();
-                }
-
+                // await signInUser(values.email, values.password);
+                // if (callback !== null) {
+                //     return callback();
+                // }
+                return handleLogin(values.email, values.password, callback);
 
             } catch (error) {
                 console.error("LOGIN ERROR", error);

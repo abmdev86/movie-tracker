@@ -1,52 +1,45 @@
-import {
-    Avatar,
-    Box,
-    Divider,
-    IconButton,
-    Menu,
-    Tooltip,
-    Typography,
-} from "@mui/material";
+import { Avatar, Box, Divider, IconButton, Menu, Tooltip } from "@mui/material";
 import LoginModal from "./LoginModal";
 import { useContext, useState } from "react";
-import PropTypes from "prop-types";
 import { UserContext } from "../contexts/FirebaseAuthContext";
+import { Link } from "react-router-dom";
 
 const authLinks = ["Profile", "My movies"];
 const unAuthLinks = ["Signup"];
 
 const FirebaseAuthUserLinks = ({ userId }) => {
     return authLinks.map((link, index) => (
-        <Typography
-            component="a"
-            href={`/${link.replace(" ", "-").toLocaleLowerCase()}/${userId}`}
-            sx={{
-                mr: 2,
-                display: { xs: "flex", },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-            }}
-            key={index}
-        >
-            {link}
-        </Typography>
+        <Box sx={{ flexGrow: 1, m: "auto" }}>
+            <Link
+                to={`/${link.replace(" ", "-").toLocaleLowerCase()}/${userId}`}
+                style={{
+                    marginRight: 2,
+                    display: { xs: "flex" },
+                    flexGrow: 1,
+                    fontFamily: "monospace",
+                    fontWeight: 700,
+                    letterSpacing: ".3rem",
+                    color: "inherit",
+                    textDecoration: "none",
+                    padding: 2,
+                }}
+                key={index}
+            >
+                {link}
+            </Link>
+        </Box>
     ));
 };
 
 const GuestUserLinks = () => {
     return unAuthLinks.map((link, index) => (
-        <Typography
-            href={`/${link.replace(" ", "-").toLocaleLowerCase()}`}
+        <Link
+            to={`/${link.replace(" ", "-").toLocaleLowerCase()}`}
             key={index}
-            component='a'
-            sx={{
-                mr: 2,
+            style={{
+                marginRight: 2,
                 display: { xs: "flex" },
-                p: 2,
+                padding: 2,
                 flexGrow: 1,
                 fontFamily: "monospace",
                 fontWeight: 700,
@@ -56,13 +49,13 @@ const GuestUserLinks = () => {
             }}
         >
             {link}
-        </Typography>
+        </Link>
     ));
 };
 
-export default function UserMenu({ user }) {
+export default function UserMenu() {
     const [anchorElUser, setAnchorElUser] = useState(null);
-
+    const { currentUser, isLoggedIn } = useContext(UserContext);
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -76,7 +69,10 @@ export default function UserMenu({ user }) {
         <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open Settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt={`${user?.name}'s profile`} src={user?.photoUrl} />
+                    <Avatar
+                        alt={`${currentUser?.name}'s profile`}
+                        src={currentUser?.photoUrl}
+                    />
                 </IconButton>
             </Tooltip>
             <Menu
@@ -95,17 +91,14 @@ export default function UserMenu({ user }) {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
             >
-                {user?.online ? <FirebaseAuthUserLinks userId={user?.id} /> : <GuestUserLinks />}
+                {isLoggedIn ? (
+                    <FirebaseAuthUserLinks userId={currentUser?.id} />
+                ) : (
+                    <GuestUserLinks />
+                )}
                 <Divider />
-                <LoginModal isOnline={user?.online} />
+                <LoginModal isOnline={isLoggedIn} />
             </Menu>
         </Box>
     );
 }
-
-UserMenu.propTypes = {
-    alt: PropTypes.string,
-    src: PropTypes.string,
-    isLoggedIn: PropTypes.bool,
-    links: PropTypes.arrayOf(PropTypes.string),
-};
