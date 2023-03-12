@@ -9,7 +9,7 @@ const unAuthLinks = ["Signup"];
 
 const FirebaseAuthUserLinks = ({ userId }) => {
     return authLinks.map((link, index) => (
-        <Box sx={{ flexGrow: 1, m: "auto" }}>
+        <Box sx={{ flexGrow: 1, m: "auto" }} key={index}>
             <Link
                 to={`/${link.replace(" ", "-").toLocaleLowerCase()}/${userId}`}
                 style={{

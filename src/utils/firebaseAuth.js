@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import { initialUser } from "../contexts/FirebaseAuthContext";
 
@@ -43,6 +44,16 @@ const createUserWithEmail = async (email, password) => {
   }
 };
 
+const updateDisplayName = async (updatedName) => {
+  try {
+    await updateProfile(firebaseAuth.currentUser, {
+      displayName: updatedName,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 function onAuthStateChange(callback) {
   return firebaseAuth.onAuthStateChanged((user) => {
     let updatedUser = initialUser;
@@ -70,4 +81,10 @@ function onAuthStateChange(callback) {
   });
 }
 
-export { signInUser, signOutUser, createUserWithEmail, onAuthStateChange };
+export {
+  signInUser,
+  signOutUser,
+  createUserWithEmail,
+  onAuthStateChange,
+  updateDisplayName,
+};

@@ -1,12 +1,14 @@
 import { createContext, useState } from "react";
 import {
   createUserWithEmail,
+  firebaseAuth,
   signInUser,
   signOutUser,
+  updateDisplayName,
 } from "../utils/firebaseAuth";
 
 export const UserContext = createContext(null);
-export const UserDispatchContext = createContext(null);
+//export const UserDispatchContext = createContext(null);
 
 export const initialUser = {
   id: null,
@@ -63,6 +65,20 @@ export default function UserProvider({ children }) {
       return callback();
     }
   };
+  const handleEditDisplayName = async (name, callback = null) => {
+    await updateDisplayName(name);
+    const updatedUser = firebaseAuth.currentUser;
+
+    if (updatedUser) {
+      setCurrentUser({
+        ...currentUser,
+        displayName: updatedUser.displayName,
+      });
+    }
+    if (callback !== null) {
+      return callback();
+    }
+  };
 
   return (
     <UserContext.Provider
@@ -72,6 +88,7 @@ export default function UserProvider({ children }) {
         handleCreateUser,
         handleLogin,
         handleLogout,
+        handleEditDisplayName,
       }}
     >
       {children}
