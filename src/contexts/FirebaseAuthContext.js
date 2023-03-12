@@ -5,6 +5,8 @@ import {
   signInUser,
   signOutUser,
   updateDisplayName,
+  updateUserEmail,
+  verifyEmail,
 } from "../utils/firebaseAuth";
 
 export const UserContext = createContext(null);
@@ -26,6 +28,8 @@ export default function UserProvider({ children }) {
   const handleLogin = async (email, password, callback = null) => {
     const loginUser = await signInUser(email, password);
     console.log(loginUser);
+
+    // todo move to onAuthStateChange
     setCurrentUser({
       id: loginUser.user.uid,
       email: loginUser.user.email,
@@ -51,18 +55,24 @@ export default function UserProvider({ children }) {
   };
 
   const handleCreateUser = async (email, password, callback = null) => {
-    const newUser = await createUserWithEmail(email, password);
-    setCurrentUser({
-      id: newUser.uid,
-      email: newUser.email,
-      accessToken: newUser.accessToken,
-      displayName: newUser.displayName ?? "NoName",
-      emailVerified: newUser.emailVerified,
-      photoURL: newUser.photoURL,
-    });
-    setIsLoggedIn(true);
-    if (callback) {
-      return callback();
+    try {
+      const newUser = await createUserWithEmail(email, password);
+
+      setCurrentUser({
+        id: newUser.uid,
+        email: newUser.email,
+        accessToken: newUser.accessToken,
+        displayName: newUser.displayName ?? "NoName",
+        emailVerified: newUser.emailVerified,
+        photoURL: newUser.photoURL,
+      });
+      setIsLoggedIn(true);
+      await verifyEmail(firebaseAuth.currentUser);
+      if (callback) {
+        return callback();
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
   const handleEditDisplayName = async (name, callback = null) => {
@@ -79,6 +89,21 @@ export default function UserProvider({ children }) {
       return callback();
     }
   };
+  const handleEditEmail = async (email, callback = null) => {
+    await updateUserEmail(email);
+    const updatedUser = firebaseAuth.currentUser;
+
+    if (updatedUser) {
+      setCurrentUser({
+        ...currentUser,
+        email: updatedUser.email,
+      });
+    }
+
+    if (callback) {
+      return callback();
+    }
+  };
 
   return (
     <UserContext.Provider
@@ -89,6 +114,7 @@ export default function UserProvider({ children }) {
         handleLogin,
         handleLogout,
         handleEditDisplayName,
+        handleEditEmail,
       }}
     >
       {children}

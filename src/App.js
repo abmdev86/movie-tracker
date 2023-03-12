@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
+
 function App() {
   const { isLoggedIn, currentUser } = useContext(UserContext);
 

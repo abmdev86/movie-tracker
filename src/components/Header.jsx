@@ -81,7 +81,7 @@ export default function Header({ pages, children }) {
                         >
                             {pages.map((page, index) => (
                                 <MenuItem key={index} onClick={handleCloseNavMenu}>
-                                    <Link to={`/${page}`}>
+                                    <Link to={`/${page.toLocaleLowerCase()}`}>
                                         <Typography noWrap sx={{ textDecoration: "none" }}>
                                             {page}
                                         </Typography>
@@ -92,19 +92,24 @@ export default function Header({ pages, children }) {
                     </Box>
 
                     {/* add icon */}
-                    <Link to="/">
+                    <Link
+                        to="/"
+                        style={{
+                            marginRight: 2,
+                            flexGrow: 1,
+                            fontFamily: "monospace",
+                            fontWeight: 700,
+                            letterSpacing: ".3rem",
+                            color: "inherit",
+                            textDecoration: "none",
+                        }}
+                    >
                         <Typography
                             variant="h5"
                             noWrap
                             sx={{
                                 mr: 2,
                                 display: { xs: "flex", md: "none" },
-                                flexGrow: 1,
-                                fontFamily: "monospace",
-                                fontWeight: 700,
-                                letterSpacing: ".3rem",
-                                color: "inherit",
-                                textDecoration: "none",
                             }}
                         >
                             Movie Tracker
@@ -113,21 +118,22 @@ export default function Header({ pages, children }) {
 
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                         {pages.map((page, index) => (
-                            <Typography
+                            <Link
+                                style={{ textDecoration: "none", color: "inherit" }}
                                 key={index}
-                                component="a"
-                                href={`/${page}`}
-                                variant="button"
-                                sx={{
-                                    textDecoration: "none",
-                                    mr: 2,
-                                    display: "block",
-                                    letterSpacing: ".1rem",
-                                    color: "inherit",
-                                }}
+                                to={`/${page.toLocaleLowerCase()}`}
                             >
-                                {page}
-                            </Typography>
+                                <Typography
+                                    key={index}
+                                    sx={{
+                                        mr: 2,
+                                        display: "block",
+                                        letterSpacing: ".1rem",
+                                    }}
+                                >
+                                    {page}
+                                </Typography>
+                            </Link>
                         ))}
                     </Box>
                     {children}

@@ -5,19 +5,18 @@ import {
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
+  updateEmail,
+  sendEmailVerification,
 } from "firebase/auth";
 import { initialUser } from "../contexts/FirebaseAuthContext";
 
-export const firebaseAuth = getAuth(app);
+const firebaseAuth = getAuth(app);
 
 const signInUser = async (email, password) => {
   try {
     return await signInWithEmailAndPassword(firebaseAuth, email, password);
   } catch (error) {
-    throw error;
-    //console.log("firebasAuth::ERROR::SignIn-> ", error);
-
-    // todo redirect user to login page and display the error.
+    console.log(error);
   }
 };
 
@@ -30,7 +29,6 @@ const signOutUser = async () => {
 };
 
 const createUserWithEmail = async (email, password) => {
-  //const newUser = null;
   try {
     const newUser = await createUserWithEmailAndPassword(
       firebaseAuth,
@@ -44,11 +42,23 @@ const createUserWithEmail = async (email, password) => {
   }
 };
 
-const updateDisplayName = async (updatedName) => {
+const verifyEmail = async (user) => {
+  await sendEmailVerification(user);
+};
+
+const updateDisplayName = async (value) => {
   try {
     await updateProfile(firebaseAuth.currentUser, {
-      displayName: updatedName,
+      displayName: value,
     });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const updateUserEmail = async (value) => {
+  try {
+    await updateEmail(firebaseAuth.currentUser, value);
   } catch (error) {
     console.log(error);
   }
@@ -82,9 +92,12 @@ function onAuthStateChange(callback) {
 }
 
 export {
+  firebaseAuth,
   signInUser,
   signOutUser,
   createUserWithEmail,
   onAuthStateChange,
   updateDisplayName,
+  updateUserEmail,
+  verifyEmail,
 };
