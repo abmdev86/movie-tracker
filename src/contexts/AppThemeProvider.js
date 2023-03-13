@@ -3,51 +3,6 @@ import { ThemeProvider } from "@mui/material/styles";
 import { createTheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material/";
 
-export const AppLightThemeOptions = {
-  palette: {
-    mode: "light",
-    primary: {
-      main: "#c78283",
-      dark: "#160c04",
-    },
-    secondary: {
-      main: "#85756e",
-    },
-    text: {
-      primary: "#191516",
-    },
-    error: {
-      main: "#d81159",
-    },
-    background: {
-      default: "#e5ecf4",
-      paper: "#cdc5b4",
-    },
-  },
-};
-export const AppDarkTheme = {
-  palette: {
-    mode: "dark",
-    primary: {
-      main: "#c78283",
-      dark: "#160c04",
-    },
-    secondary: {
-      main: "#85756e",
-    },
-    text: {
-      primary: "#191516",
-    },
-    error: {
-      main: "#d81159",
-    },
-    background: {
-      default: "#040F0F",
-      paper: "#cdc5b4",
-    },
-  },
-};
-
 const getDesignTokens = (mode) => ({
   palette: {
     mode,
@@ -58,7 +13,7 @@ const getDesignTokens = (mode) => ({
             dark: "#160c04",
           },
           secondary: {
-            main: "#85756e",
+            main: "#E3ACF9",
           },
           text: {
             primary: "#191516",
@@ -67,8 +22,8 @@ const getDesignTokens = (mode) => ({
             main: "#d81159",
           },
           background: {
-            default: "#e5ecf4",
-            paper: "#cdc5b4",
+            default: "#FBF1D3",
+            paper: "#FADA9D",
           },
         }
       : {
