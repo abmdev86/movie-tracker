@@ -1,5 +1,6 @@
 import { Box, Container, Typography } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -23,7 +24,11 @@ export default class ErrorBoundary extends React.Component {
       return (
         <Container maxWidth="xs">
           <Box sx={{ mt: "25vh" }}>
-            <Typography variant="h4">Something went wrong.</Typography>
+            <Typography variant="h4" color="danger">
+              {" "}
+              Sorry, Something went wrong....
+            </Typography>
+            <Link to="/">Home</Link>
           </Box>
         </Container>
       );

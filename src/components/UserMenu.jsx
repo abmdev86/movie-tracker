@@ -1,10 +1,10 @@
-import { Avatar, Box, Divider, IconButton, Menu, Tooltip } from "@mui/material";
+import { Avatar, Box, Divider, IconButton, Menu, Tooltip, useTheme } from "@mui/material";
 import LoginModal from "./LoginModal";
 import { useContext, useState } from "react";
 import { UserContext } from "../contexts/FirebaseAuthContext";
 import { Link } from "react-router-dom";
 
-const authLinks = ["Profile", "My movies"];
+const authLinks = ["Profile", "My movies", "Settings"];
 const unAuthLinks = ["Signup"];
 
 const FirebaseAuthUserLinks = ({ userId }) => {
@@ -56,7 +56,7 @@ const GuestUserLinks = () => {
 export default function UserMenu() {
     const [anchorElUser, setAnchorElUser] = useState(null);
     const { currentUser, isLoggedIn } = useContext(UserContext);
-
+    const theme = useTheme();
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
@@ -76,7 +76,7 @@ export default function UserMenu() {
                 </IconButton>
             </Tooltip>
             <Menu
-                sx={{ mt: "45px" }}
+                sx={{ mt: "45px", }}
                 id="user-menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
@@ -96,7 +96,7 @@ export default function UserMenu() {
                 ) : (
                     <GuestUserLinks />
                 )}
-                <Divider />
+                <Divider sx={{ mt: 2, mb: 2 }} />
                 <LoginModal isOnline={isLoggedIn} />
             </Menu>
         </Box>

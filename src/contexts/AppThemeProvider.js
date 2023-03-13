@@ -21,8 +21,8 @@ const getDesignTokens = (mode) => ({
             main: "#d81159",
           },
           background: {
-            default: "#ebebd3",
-            paper: "#5fa8d3",
+            default: "#E0E2DB",
+            paper: "#D2D4C8",
           },
         }
       : {
@@ -34,14 +34,14 @@ const getDesignTokens = (mode) => ({
             main: "#021A1E",
           },
           text: {
-            primary: "#191516",
+            primary: "#fff",
           },
           error: {
             main: "#d81159",
           },
           background: {
             default: "#040F0F",
-            paper: "#cdc5b4",
+            paper: "#2E3532",
           },
         }),
   },

@@ -1,6 +1,5 @@
 import { Box, Button, Container, Divider, Typography } from "@mui/material";
 import { useNavigate, useRouteError } from "react-router-dom";
-import Layout from "../components/Layout";
 
 export default function ErrorPage() {
     const error = useRouteError();

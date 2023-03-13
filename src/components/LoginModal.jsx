@@ -39,7 +39,7 @@ export default function LoginModal({ isOnline }) {
 
 
     return (
-        <Box style={{ backgroundColor: `${theme.palette.secondary.main}`, padding: 4, margin: 4, }}>
+        <Box style={{ padding: 4, margin: 4, }}>
             <Button color="primary" variant="outlined" onClick={handleOpen}>{isOnline ? "Logout" : "Login"}</Button>
             {!isOnline ? (
                 <Modal
