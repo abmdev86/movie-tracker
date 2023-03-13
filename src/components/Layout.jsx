@@ -1,22 +1,20 @@
-import { Container } from "@mui/material";
+import { Grid } from "@mui/material";
+import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import UserMenu from "./UserMenu";
 
-export default function Layout({ children }) {
-
-
-
+export default function Layout({ user }) {
     return (
-        <Container maxWidth="xl">
-            <Header pages={["Movies", "Reviews", 'Favorites']}>
-                <UserMenu links={["Profile", 'Settings']} />
-
+        <>
+            <Header pages={["Movies", "Reviews", "Favorites", "Login"]}>
+                <UserMenu user={user} />
             </Header>
-            <Container maxWidth='xs'>
-                {children}
-            </Container>
-
-
-        </Container>
-    )
+            <Grid container spacing={2} sx={{ p: 2 }}>
+                <Grid item xs={12}>
+                    <Outlet />
+                </Grid>
+                {/* todo: add footer */}
+            </Grid>
+        </>
+    );
 }
