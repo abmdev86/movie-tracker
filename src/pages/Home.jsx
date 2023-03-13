@@ -2,8 +2,9 @@ import { Paper, Typography } from "@mui/material";
 
 export default function Home({ user }) {
     return (
-        <Paper>
-            <Typography variant="h1">{`Hello, ${user?.displayName || user?.name
+        <Paper elevation={3} sx={{ mt: '25vh', p: 4 }}>
+            <Typography variant="h2">Welcome to Indie Movie Tracker</Typography>
+            <Typography variant="body1" align="center">{`Hello, ${user?.displayName || user?.name
                 }`}</Typography>
         </Paper>
     );
