@@ -24,7 +24,7 @@ export default function Header({ pages, children }) {
         setAnchorElNav(null);
     };
     return (
-        <AppBar position="static" sx={{ width: { xl: "100%" } }}>
+        <AppBar position="static" color="primary" sx={{ width: { xl: "100%" } }} enableColorOnDark>
             <Container maxWidth="xl">
                 <Toolbar variant="dense" disableGutters>
                     <Link
