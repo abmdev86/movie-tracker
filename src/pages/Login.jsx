@@ -1,6 +1,6 @@
+import { Container } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import LoginForm from "../components/LoginForm";
-
 
 export default function Login() {
     let navigate = useNavigate();
@@ -9,11 +9,11 @@ export default function Login() {
 
     const handleSuccessLogin = () => {
         return navigate(from, { replace: true });
-    }
+    };
 
     return (
-        <LoginForm callback={handleSuccessLogin} />
-    )
-
-
+        <Container maxWidth="xs" sx={{ mt: "25vh" }}>
+            <LoginForm callback={handleSuccessLogin} />
+        </Container>
+    );
 }

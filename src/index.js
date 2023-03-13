@@ -7,6 +7,7 @@ import { analytics } from "./utils/firebaseConfig";
 import { BrowserRouter } from "react-router-dom";
 import UserProvider from "./contexts/FirebaseAuthContext";
 import AppThemeProvider from "./contexts/AppThemeProvider";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -14,7 +15,9 @@ root.render(
     <BrowserRouter>
       <AppThemeProvider>
         <UserProvider>
-          <App />
+          <ErrorBoundary>
+            <App />
+          </ErrorBoundary>
         </UserProvider>
       </AppThemeProvider>
     </BrowserRouter>

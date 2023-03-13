@@ -1,4 +1,4 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import { useContext, useState } from "react";
 import PropTypes from "prop-types";
@@ -31,6 +31,7 @@ const LogoutScreen = ({ handleClose }) => {
 
 export default function LoginModal({ isOnline }) {
     const [open, setOpen] = useState(false);
+    const theme = useTheme();
 
 
     const handleOpen = () => setOpen(true);
@@ -38,8 +39,8 @@ export default function LoginModal({ isOnline }) {
 
 
     return (
-        <div>
-            <Button onClick={handleOpen}>{isOnline ? "Logout" : "Login"}</Button>
+        <Box style={{ backgroundColor: `${theme.palette.secondary.main}`, padding: 4, margin: 4, }}>
+            <Button color="primary" variant="outlined" onClick={handleOpen}>{isOnline ? "Logout" : "Login"}</Button>
             {!isOnline ? (
                 <Modal
                     open={open}
@@ -54,7 +55,7 @@ export default function LoginModal({ isOnline }) {
                             left: "50%",
                             transform: "translate(-50%,-50%)",
                             width: 400,
-                            bgcolor: "background.paper",
+                            bgcolor: `${theme.palette.secondary.main}`,
                             border: "2px solid #000",
                             boxShadow: 24,
                             p: 4,
@@ -77,7 +78,7 @@ export default function LoginModal({ isOnline }) {
                             left: "50%",
                             transform: "translate(-50%,-50%)",
                             width: 400,
-                            bgcolor: "background.paper",
+                            bgcolor: `${theme.palette.secondary.main}`,
                             border: "2px solid #000",
                             boxShadow: 24,
                             p: 4,
@@ -88,10 +89,10 @@ export default function LoginModal({ isOnline }) {
                 </Modal>
             )}
 
-        </div>
+        </Box>
     );
 }
 
 LoginModal.propTypes = {
-    label: PropTypes.string,
+    isOnline: PropTypes.bool,
 };

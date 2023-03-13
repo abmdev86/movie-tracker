@@ -7,11 +7,11 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 function App() {
   const { isLoggedIn, currentUser } = useContext(UserContext);
 
-  console.log("APP::user -->", currentUser);
   return (
     <Routes>
       <Route element={<Layout user={currentUser} />}>

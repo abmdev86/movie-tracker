@@ -7,6 +7,7 @@ import {
     MenuItem,
     Toolbar,
     Typography,
+    useTheme,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import PropTypes from "prop-types";
@@ -15,7 +16,7 @@ import { Link } from "react-router-dom";
 
 export default function Header({ pages, children }) {
     const [anchorElNav, setAnchorElNav] = useState(null);
-
+    const theme = useTheme();
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -50,7 +51,7 @@ export default function Header({ pages, children }) {
                         </Typography>
                     </Link>
 
-                    <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+                    <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" }, bgcolor: `${theme.palette.secondary.main}` }}>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
@@ -77,6 +78,7 @@ export default function Header({ pages, children }) {
                             onClose={handleCloseNavMenu}
                             sx={{
                                 display: { xs: "block", md: "none" },
+
                             }}
                         >
                             {pages.map((page, index) => (
@@ -116,7 +118,7 @@ export default function Header({ pages, children }) {
                         </Typography>
                     </Link>
 
-                    <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+                    <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, }}>
                         {pages.map((page, index) => (
                             <Link
                                 style={{ textDecoration: "none", color: "inherit" }}
