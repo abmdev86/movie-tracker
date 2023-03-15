@@ -28,7 +28,7 @@ export default class ErrorBoundary extends React.Component {
               {" "}
               Sorry, Something went wrong....
             </Typography>
-            <Link to="/">Home</Link>
+            <a href="/">Home</a>
           </Box>
         </Container>
       );

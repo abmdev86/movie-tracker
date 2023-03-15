@@ -8,8 +8,8 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 import UserSettingsPage from "./pages/UserSettingsPage";
+import Movies from "./pages/Movies";
 import ErrorBoundary from "./components/ErrorBoundary";
-import { element } from "prop-types";
 
 function App() {
   const { isLoggedIn, currentUser } = useContext(UserContext);
@@ -26,6 +26,7 @@ function App() {
           <Route path="/settings/:id" element={<UserSettingsPage />} />
         </Route>
         <Route path="/signup" element={<Signup />} />
+        <Route path="/movies" element={<Movies />} />
         <Route
           path="*"
           ErrorBoundary={<ErrorBoundary />}

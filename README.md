@@ -8,4 +8,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ![Demo](./public/chrome_8if8FWR49I.gif)
 
+## Description
+
+Log in and add movie and links where to view them (legally!). Indie, industry.
+
 ## [🙋 Auroiah Morgan](https://www.auroiah.com)
