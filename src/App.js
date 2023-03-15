@@ -12,17 +12,17 @@ import Movies from "./pages/Movies";
 import ErrorBoundary from "./components/ErrorBoundary";
 
 function App() {
-  const { isLoggedIn, currentUser } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
 
   return (
     <Routes>
       <Route element={<Layout user={currentUser} />}>
         <Route path="/" element={<Home user={currentUser} />} />
         <Route path="/login" element={<Login />} />
-        <Route element={<RouteProtection isLoggedIn={isLoggedIn} />}>
+        <Route element={<RouteProtection />}>
           <Route path="/profile/:id" element={<Profile />} />
         </Route>
-        <Route element={<RouteProtection isLoggedIn={isLoggedIn} />}>
+        <Route element={<RouteProtection />}>
           <Route path="/settings/:id" element={<UserSettingsPage />} />
         </Route>
         <Route path="/signup" element={<Signup />} />

@@ -7,16 +7,17 @@ import {
   updateProfile,
   updateEmail,
   sendEmailVerification,
+  deleteUser,
+  reauthenticateWithCredential,
 } from "firebase/auth";
 import { initialUser } from "../contexts/FirebaseAuthContext";
 
 const firebaseAuth = getAuth(app);
-
 const signInUser = async (email, password) => {
   try {
-    return await signInWithEmailAndPassword(firebaseAuth, email, password);
+    await signInWithEmailAndPassword(firebaseAuth, email, password);
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 
@@ -38,7 +39,7 @@ const createUserWithEmail = async (email, password) => {
 
     return newUser;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
 
@@ -64,12 +65,20 @@ const updateUserEmail = async (value) => {
   }
 };
 
-const deleteUser = async (id) => {
-  let currentUser = firebaseAuth.currentUser;
-  if (id === currentUser.uid) {
+const deleteCurrentUserFB = async (currentUser) => {
+  try {
+    //let currentUser = firebaseAuth.currentUser;
+
+    await deleteUser(currentUser);
+  } catch (error) {
+    throw error;
   }
 };
-
+// todo reauth for deletion and other tasks.
+const reAuth = async (email, pw) => {
+  const current = firebaseAuth.currentUser;
+  await reauthenticateWithCredential(current, { email, pw });
+};
 function onAuthStateChange(callback, loginBoolCallback) {
   return firebaseAuth.onAuthStateChanged((user) => {
     let updatedUser = {
@@ -110,5 +119,5 @@ export {
   updateDisplayName,
   updateUserEmail,
   verifyEmail,
-  deleteUser,
+  deleteCurrentUserFB,
 };

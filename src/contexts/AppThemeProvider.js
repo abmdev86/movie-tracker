@@ -20,6 +20,10 @@ const getDesignTokens = (mode) => ({
           error: {
             main: "#d81159",
           },
+          danger: {
+            main: "#d81159",
+          },
+
           background: {
             default: "#E0E2DB",
             paper: "#D2D4C8",
@@ -39,6 +43,10 @@ const getDesignTokens = (mode) => ({
           error: {
             main: "#d81159",
           },
+          danger: {
+            main: "#d81159",
+          },
+
           background: {
             default: "#040F0F",
             paper: "#2E3532",

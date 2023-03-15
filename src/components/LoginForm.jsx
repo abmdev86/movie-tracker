@@ -33,18 +33,8 @@ export default function LoginForm({ callback }) {
         },
         validationSchema: loginValidationSchema,
         onSubmit: async (values, { setSubmitting }) => {
-            try {
-                // await signInUser(values.email, values.password);
-                // if (callback !== null) {
-                //     return callback();
-                // }
-                return handleLogin(values.email, values.password, callback);
 
-            } catch (error) {
-                console.error("LOGIN ERROR", error);
-                setSubmitting(false);
-
-            }
+            await handleLogin(values.email, values.password, callback);
         },
     });
 

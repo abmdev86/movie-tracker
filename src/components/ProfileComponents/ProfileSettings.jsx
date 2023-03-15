@@ -10,12 +10,20 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState, useContext } from "react";
 import { AppModeContext } from "../../contexts/AppThemeProvider";
+import { UserContext } from "../../contexts/FirebaseAuthContext";
 
 export default function ProfileSettings() {
     const colorMode = useContext(AppModeContext);
     const theme = useTheme();
+    const { deleteCurrentUser, auth } = useContext(UserContext);
 
     const [expanded, setExpanded] = useState(false);
+    const handleDeleteAccount = () => {
+        if (window.confirm('Are you sure you want to delete your account?')) {
+            console.log('confirmed deletion of ', auth.currentUser);
+            deleteCurrentUser(auth.currentUser);
+        }
+    }
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
@@ -69,7 +77,7 @@ export default function ProfileSettings() {
                             Delete Account
                         </Grid>
                         <Grid item xs={6}>
-                            <Button variant="contained" color="danger" >
+                            <Button variant="contained" onClick={handleDeleteAccount} color='danger' >
                                 Delete Account
                             </Button>
                         </Grid>
