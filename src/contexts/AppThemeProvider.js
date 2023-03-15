@@ -58,7 +58,7 @@ export default function AppThemeProvider({ children }) {
     }),
     []
   );
-  console.log("getDesignTokens", getDesignTokens(themeMode));
+
   const currentAppTheme = useMemo(
     () => createTheme(getDesignTokens(themeMode)),
     [themeMode]

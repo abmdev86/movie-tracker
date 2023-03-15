@@ -1,7 +1,8 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import {
   createUserWithEmail,
   firebaseAuth,
+  onAuthStateChange,
   signInUser,
   signOutUser,
   updateDisplayName,
@@ -25,19 +26,16 @@ export default function UserProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(initialUser);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleLogin = async (email, password, callback = null) => {
-    const loginUser = await signInUser(email, password);
-    console.log(loginUser);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChange(setCurrentUser, setIsLoggedIn);
 
-    // todo move to onAuthStateChange
-    setCurrentUser({
-      id: loginUser.user.uid,
-      email: loginUser.user.email,
-      accessToken: loginUser.user.accessToken,
-      displayName: loginUser.user.displayName ?? "NoName",
-      emailVerified: loginUser.user.emailVerified,
-      photoURL: loginUser.user.photoURL,
-    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const handleLogin = async (email, password, callback = null) => {
+    await signInUser(email, password);
     setIsLoggedIn(true);
     if (callback) {
       return callback();
@@ -47,7 +45,6 @@ export default function UserProvider({ children }) {
   const handleLogout = async (callback = null) => {
     await signOutUser();
     setIsLoggedIn(false);
-    setCurrentUser({ ...initialUser });
     if (callback) {
       return callback;
     }

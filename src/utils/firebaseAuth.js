@@ -64,27 +64,37 @@ const updateUserEmail = async (value) => {
   }
 };
 
-function onAuthStateChange(callback) {
+const deleteUser = async (id) => {
+  let currentUser = firebaseAuth.currentUser;
+  if (id === currentUser.uid) {
+  }
+};
+
+function onAuthStateChange(callback, loginBoolCallback) {
   return firebaseAuth.onAuthStateChanged((user) => {
-    let updatedUser = initialUser;
+    let updatedUser = {
+      id: null,
+      email: "",
+      accessToken: "",
+      displayName: "Guest",
+      emailVerified: false,
+      photoURL: "",
+    };
     if (user) {
       updatedUser = {
+        ...updatedUser,
         id: user.uid,
-        name: user.email,
-        token: user.accessToken,
+        email: user.email,
+        accessToken: user.accessToken,
         displayName: user.displayName ?? `${user.email}`,
-        isVerified: user.emailVerified,
+        emailVerified: user.emailVerified,
         photoUrl: user.photoURL,
-        online: user.auth.currentUser ? true : false,
       };
-      callback((prev) => {
-        return {
-          ...prev,
-          ...updatedUser,
-        };
-      });
+      callback({ ...updatedUser });
+      loginBoolCallback(true);
     } else {
-      callback({
+      loginBoolCallback(false);
+      return callback({
         ...initialUser,
       });
     }
@@ -100,4 +110,5 @@ export {
   updateDisplayName,
   updateUserEmail,
   verifyEmail,
+  deleteUser,
 };
